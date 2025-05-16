@@ -50,7 +50,7 @@ class TreeN:
     def get_persons_with_adult_daughter(self) -> List[Person]:
         result = []
         for node in self.nodes.values():
-            if node.person.gender.upper() == "F" and node.person.age >= 18:
+            if node.person.gender.lower() == "F" and node.person.age >= 18:
                 if node.parent:
                     result.append(node.parent.person)
         return result
