@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "482a4c26-9b29-46af-b795-ef12b08dc4fc",
+		"name": "arbol n-ario 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42135426"
+	},
+	"item": [
+		{
+			"name": "states",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Ana\",\r\n  \"last_name\": \"Gomez\",\r\n  \"age\": 45,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": \"CC\",\r\n  \"location\": {\r\n    \"code\": \"17001000\",\r\n    \"description\": \"Manizales (Caldas)\"\r\n  },\r\n  \"parent_id\": null\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/location/states",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"location",
+						"states"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "capitals",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/location/capitals",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"location",
+						"capitals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "state code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/location/state/05",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"location",
+						"state",
+						"05"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/location/code/05001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"location",
+						"code",
+						"05001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Age</th>\r",
+							"        <th>Gender</th>\r",
+							"        <th>Type Document</th>\r",
+							"        <th>Location Code</th>\r",
+							"        <th>Location Description</th>\r",
+							"        <th>Parent ID</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>{{response.person.id}}</td>\r",
+							"        <td>{{response.person.name}}</td>\r",
+							"        <td>{{response.person.last_name}}</td>\r",
+							"        <td>{{response.person.age}}</td>\r",
+							"        <td>{{response.person.gender}}</td>\r",
+							"        <td>{{response.person.typedoc}}</td>\r",
+							"        <td>{{response.person.location.code}}</td>\r",
+							"        <td>{{response.person.location.description}}</td>\r",
+							"        <td>{{response.person.parent_id}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 6,\r\n  \"name\": \"sandaa\",\r\n  \"last_name\": \"sanchez\",\r\n  \"age\": 65,\r\n  \"gender\": \"m\",\r\n  \"typedoc\": \"Cedula de Ciudadania\",\r\n  \"location\": {\r\n    \"code\": \"17001\",\r\n    \"description\": \"Manizales\"\r\n  },\r\n  \"parent_id\": 1\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/person",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list persons",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update person",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 2,\r\n  \"name\": \"sofia\",\r\n  \"last_name\": \"sanchez\",\r\n  \"age\": 20,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": \"Cedula de Ciudadania\",\r\n  \"location\": {\r\n    \"code\": \"17001\",\r\n    \"description\": \"Manizales\"\r\n  },\r\n  \"parent_id\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete person",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ubicacion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/location/17001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"location",
+						"17001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "typedoc",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/filter/typedoc/Cedula%20de%20Ciudadania",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"filter",
+						"typedoc",
+						"Cedula%20de%20Ciudadania"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "children adults",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/adults/daughters",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"adults",
+						"daughters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "person caracteres",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/filter/?code=17001&typedoc=Cedula%20de%20Ciudadania&gender=m",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"filter",
+						""
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "17001"
+						},
+						{
+							"key": "typedoc",
+							"value": "Cedula%20de%20Ciudadania"
+						},
+						{
+							"key": "gender",
+							"value": "m"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "raiz",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/person/root",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"person",
+						"root"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
