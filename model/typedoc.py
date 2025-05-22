@@ -5,3 +5,4 @@ class TypeDoc(str, Enum):
     TI = "Tarjeta de Identidad"
     RC = "Registro Civil"
     PAS = "Pasaporte"
+

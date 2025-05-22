@@ -32,25 +32,61 @@ class TreeN:
     def update_person(self, id: int, new_person: Person) -> bool:
         node = self.nodes.get(id)
         if node:
-            node.person = new_person
+            # Validar que no se intente cambiar el id
+            if new_person.id != id:
+                raise ValueError("No se puede cambiar el ID de una persona existente.")
+
+            # Validar que no se intente cambiar el parent_id
+            current_parent_id = node.parent.person.id if node.parent else None
+            if new_person.parent_id != current_parent_id:
+                raise ValueError("No se puede cambiar el padre de una persona existente.")
+
+            # Actualizar los demás datos
+            node.person.name = new_person.name
+            node.person.age = new_person.age
+            node.person.gender = new_person.gender
+            node.person.location = new_person.location
+            node.person.typedoc = new_person.typedoc
             return True
         return False
 
     def delete_person(self, id: int) -> bool:
         node_to_delete = self.nodes.get(id)
-        if node_to_delete:
-            # Quitar referencias desde otros nodos
-            for node in self.nodes.values():
-                if node.parent and node.parent.person.id == id:
-                    node.parent = None
-            del self.nodes[id]
-            return True
-        return False
+        if not node_to_delete:
+            return False
+
+        # Encontrar hijos del nodo a eliminar
+        children = [node for node in self.nodes.values() if node.parent == node_to_delete]
+
+        if node_to_delete.parent is None:
+            # El nodo es la raíz
+            if children:
+                # Elegir el hijo mayor para promoverlo como nueva raíz
+                new_root = max(children, key=lambda n: n.person.age)
+                new_root.parent = None
+                new_root.person.parent_id = None
+
+                # Los demás hijos apuntan al nuevo root
+                for child in children:
+                    if child != new_root:
+                        child.parent = new_root
+                        child.person.parent_id = new_root.person.id
+            # Si no tiene hijos, simplemente se elimina
+        else:
+            # El nodo no es la raíz: dejar a sus hijos huérfanos
+            for child in children:
+                child.parent = None
+                child.person.parent_id = None  # ← importante
+
+        # Eliminar el nodo del diccionario
+        del self.nodes[id]
+        return True
 
     def get_persons_with_adult_daughter(self) -> List[Person]:
         result = []
-        for node in self.nodes.values():
-            if node.person.gender.lower() == "F" and node.person.age >= 18:
+        for person_id in self.nodes:
+            node = self.nodes[person_id]
+            if node.person.gender.lower() == "f" and node.person.age >= 18:
                 if node.parent:
                     result.append(node.parent.person)
         return result
@@ -68,6 +104,12 @@ class TreeN:
 
     def is_empty(self) -> bool:
         return len(self.nodes) == 0
+
+    def get_root(self) -> Optional[Person]:
+        for node in self.nodes.values():
+            if node.parent is None:
+                return node.person
+        return None  # En caso de que el árbol esté vacío
 
 
 

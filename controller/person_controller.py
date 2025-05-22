@@ -2,15 +2,21 @@ from fastapi import APIRouter, HTTPException, status
 from model.person import Person
 from service import person_service
 from service.person_service import tree
-from model.filterperson import FilterPerson
+from fastapi import Query
 from service.messages_service import MessageService
+from typing import Optional
+from model.nodeN import NodeN
 
 router = APIRouter(prefix="/person")
 messages = MessageService()
 
-@router.post("/filter/")
-def get_by_filters_json(filters: FilterPerson):
-    persons = person_service.get_persons_by_conditions(filters.code, filters.typedoc, filters.gender)
+@router.get("/filter/")
+def get_by_filters_query(
+    code: Optional[str] = Query(None),
+    typedoc: Optional[str] = Query(None),
+    gender: Optional[str] = Query(None)
+):
+    persons = person_service.get_persons_by_conditions(code, typedoc, gender)
     if not persons:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -37,7 +43,7 @@ def create(person: Person):
         print(f"Error inesperado: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=messages.get("error.internal_server")
+            detail="Asegurate que el id no este repetido"
         )
 
 @router.get("/")
@@ -72,14 +78,21 @@ def get_parents():
 
 @router.put("/{person_id}")
 def update(person_id: int, person: Person):
-    updated = person_service.update_person(person_id, person)
-    if updated:
-        return {"message": messages.get("update.success")}
-    else:
+    try:
+        updated = person_service.update_person(person_id, person)
+        if updated:
+            return {"message": messages.get("update.success")}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=messages.get("update.not_found")
+            )
+    except ValueError as ve:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=messages.get("update.not_found")
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(ve)
         )
+
 
 @router.delete("/{person_id}")
 def delete(person_id: int):
@@ -92,6 +105,21 @@ def delete(person_id: int):
             detail=messages.get("delete.not_found")
         )
 
+@router.get("/root")
+def get_root_person():
+    root = person_service.get_root_person()
+    if not root:
+        raise HTTPException(status_code=404, detail="No hay raíz en el árbol")
+    return root
 
 
+@router.get("/filter/typedoc/{typedoc}")
+def filter_by_typedoc(typedoc: str):
+    persons = person_service.get_persons_by_typedoc(typedoc)
+    if not persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=messages.get("filter.not_found")
+        )
+    return persons
 

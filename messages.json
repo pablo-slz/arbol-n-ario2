@@ -8,6 +8,7 @@
   "location.not_found": "No hay personas en esta ubicación.",
   "parents.no_adult_daughters": "No hay padres con hijas mayores de 18 años.",
   "filter.not_found": "No existe un usuario con esas características.",
-  "error.internal_server": "Error interno en el servidor."
+  "error.internal_server": "Error interno en el servidor.",
+  "tree.id_exits": "el id ya esta en el arbol"
 }
 
